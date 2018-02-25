@@ -1,12 +1,11 @@
 package com.mark.storm;
 
+import com.mark.storm.spout.RandomSentenceSpout;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.task.OutputCollector;
-import org.apache.storm.task.ShellBolt;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
-import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.topology.base.BaseBasicBolt;

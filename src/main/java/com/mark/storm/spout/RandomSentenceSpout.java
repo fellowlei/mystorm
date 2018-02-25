@@ -1,4 +1,4 @@
-package com.mark.storm;
+package com.mark.storm.spout;
 
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -10,6 +10,8 @@ import org.apache.storm.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Random;
 
@@ -20,6 +22,7 @@ public class RandomSentenceSpout extends BaseRichSpout {
     private static final Logger LOG = LoggerFactory.getLogger(RandomSentenceSpout.class);
     SpoutOutputCollector spoutOutputCollector;
     Random random;
+
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
         outputFieldsDeclarer.declare(new Fields("word"));
     }
@@ -42,5 +45,11 @@ public class RandomSentenceSpout extends BaseRichSpout {
 
     protected String sentence(String input) {
         return input;
+    }
+
+    public static class TimeStamped extends RandomSentenceSpout {
+        private String currentDate() {
+            return new SimpleDateFormat("yyyy.MM.dd_HH:mm:ss.SSSSSSSSS").format(new Date());
+        }
     }
 }
