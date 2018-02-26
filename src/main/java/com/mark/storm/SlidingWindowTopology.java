@@ -59,7 +59,6 @@ public class SlidingWindowTopology {
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException {
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("spout",new RandomIntegerSpout(),1);
-        // todo set fist bolt
 
         builder.setBolt("first",new SlidingWindowSumBolt().withWindow(BaseWindowedBolt.Count.of(30), BaseWindowedBolt.Count.of(10)),1)
                 .shuffleGrouping("spout");
