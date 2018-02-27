@@ -7,8 +7,10 @@ import org.apache.storm.blobstore.BlobStoreAclHandler;
 import org.apache.storm.blobstore.ClientBlobStore;
 import org.apache.storm.generated.*;
 import org.apache.storm.spout.SpoutOutputCollector;
+import org.apache.storm.task.ShellBolt;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.BasicOutputCollector;
+import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.topology.base.BaseBasicBolt;
@@ -62,18 +64,24 @@ public class BlobStoreAPIWordCountTopology {
 
     }
 
-    public static class SplitSentence extends BaseBasicBolt{
+    // Bolt implementation
+    public static class SplitSentence extends ShellBolt implements IRichBolt {
 
-        @Override
-        public void execute(Tuple tuple, BasicOutputCollector basicOutputCollector) {
-
+        public SplitSentence() {
+            super("python", "splitsentence.py");
         }
 
         @Override
-        public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-            outputFieldsDeclarer.declare(new Fields("word"));
+        public void declareOutputFields(OutputFieldsDeclarer declarer) {
+            declarer.declare(new Fields("word"));
+        }
+
+        @Override
+        public Map<String, Object> getComponentConfiguration() {
+            return null;
         }
     }
+
 
     public static class FilterWords extends BaseBasicBolt{
         boolean poll = false;
