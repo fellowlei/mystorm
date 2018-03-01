@@ -9,8 +9,6 @@ import org.apache.storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper;
 import org.apache.storm.kafka.bolt.selector.DefaultTopicSelector;
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
-import org.apache.storm.topology.IRichBolt;
-import org.apache.storm.topology.IRichSpout;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.topology.base.BaseRichSpout;
@@ -21,9 +19,6 @@ import org.apache.storm.utils.Utils;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
-
-import static org.apache.storm.utils.Utils.findAndReadConfigFile;
-import static org.apache.storm.utils.Utils.sleep;
 
 /**
  * Created by lulei on 2018/3/1.
