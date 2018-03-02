@@ -8,12 +8,19 @@ import org.apache.storm.generated.InvalidTopologyException;
 import org.apache.storm.kafka.bolt.KafkaBolt;
 import org.apache.storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper;
 import org.apache.storm.kafka.bolt.selector.DefaultTopicSelector;
+import org.apache.storm.spout.SpoutOutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.TopologyBuilder;
+import org.apache.storm.topology.base.BaseRichSpout;
 import org.apache.storm.trident.testing.FixedBatchSpout;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
+import org.apache.storm.utils.Utils;
 
+import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * Created by lulei on 2018/3/1.
@@ -22,16 +29,15 @@ public class BoltKafkaDemo {
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException {
         TopologyBuilder builder = new TopologyBuilder();
 
-        Fields fields = new Fields("key", "message");
-        FixedBatchSpout spout = new FixedBatchSpout(fields, 4,
-                new Values("storm", "1"),
-                new Values("trident", "1"),
-                new Values("needs", "1"),
-                new Values("javadoc", "1")
-        );
-        spout.setCycle(true);
-
-//        builder.setSpout("spout", spout, 5);
+//        Fields fields = new Fields("key", "message");
+//        FixedBatchSpout spout = new FixedBatchSpout(fields, 4,
+//                new Values("storm", "1"),
+//                new Values("trident", "1"),
+//                new Values("needs", "1"),
+//                new Values("javadoc", "1")
+//        );
+//        spout.setCycle(true);
+        builder.setSpout("spout", new UUIDSpout(), 5);
 //set producer properties.
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
@@ -48,6 +54,26 @@ public class BoltKafkaDemo {
         Config conf = new Config();
 
         StormSubmitter.submitTopology("kafkaboltTest", conf, builder.createTopology());
+    }
+
+
+    public static class UUIDSpout extends BaseRichSpout {
+        SpoutOutputCollector spoutOutputCollector;
+        @Override
+        public void open(Map map, TopologyContext topologyContext, SpoutOutputCollector spoutOutputCollector) {
+            this.spoutOutputCollector = spoutOutputCollector;
+        }
+
+        @Override
+        public void nextTuple() {
+            Utils.sleep(1000);
+            spoutOutputCollector.emit(new Values(UUID.randomUUID().toString()));
+        }
+
+        @Override
+        public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
+            outputFieldsDeclarer.declare(new Fields("value"));
+        }
     }
 
 }
