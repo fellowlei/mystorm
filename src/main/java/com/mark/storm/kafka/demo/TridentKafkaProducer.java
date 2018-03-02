@@ -20,7 +20,7 @@ import java.util.Properties;
 /**
  * Created by lulei on 2018/3/1.
  */
-public class TridentKafkaDemo {
+public class TridentKafkaProducer {
 
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException {
         Fields fields = new Fields("word", "count");

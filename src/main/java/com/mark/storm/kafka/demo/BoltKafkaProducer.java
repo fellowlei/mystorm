@@ -26,7 +26,7 @@ import java.util.UUID;
 /**
  * Created by lulei on 2018/3/1.
  */
-public class BoltKafkaDemo {
+public class BoltKafkaProducer {
     public static void main(String[] args) throws InvalidTopologyException, AuthorizationException, AlreadyAliveException {
         TopologyBuilder builder = new TopologyBuilder();
 
