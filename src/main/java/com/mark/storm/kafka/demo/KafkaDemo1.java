@@ -3,11 +3,9 @@ package com.mark.storm.kafka.demo;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.StormSubmitter;
-import org.apache.storm.kafka.BrokerHosts;
-import org.apache.storm.kafka.KafkaSpout;
-import org.apache.storm.kafka.SpoutConfig;
-import org.apache.storm.kafka.ZkHosts;
+import org.apache.storm.kafka.*;
 import org.apache.storm.kafka.bolt.KafkaBolt;
+import org.apache.storm.kafka.trident.GlobalPartitionInformation;
 import org.apache.storm.spout.Scheme;
 import org.apache.storm.spout.SchemeAsMultiScheme;
 import org.apache.storm.task.OutputCollector;
@@ -32,6 +30,21 @@ import java.util.Map;
  * Created by lulei on 2018/3/2.
  */
 public class KafkaDemo1 {
+
+    public static void buildKafkaSpout(){
+        Broker brokerForPartition0 = new Broker("localhost");//localhost:9092
+        Broker brokerForPartition1 = new Broker("localhost", 9092);//localhost:9092 but we specified the port explicitly
+        Broker brokerForPartition2 = new Broker("localhost:9092");//localhost:9092 specified as one string.
+        GlobalPartitionInformation partitionInfo = new GlobalPartitionInformation("my-topic");
+        partitionInfo.addPartition(0, brokerForPartition0);//mapping form partition 0 to brokerForPartition0
+        partitionInfo.addPartition(1, brokerForPartition1);//mapping form partition 1 to brokerForPartition1
+        partitionInfo.addPartition(2, brokerForPartition2);//mapping form partition 2 to brokerForPartition2
+        StaticHosts hosts = new StaticHosts(partitionInfo);
+        SpoutConfig spoutConfig=new SpoutConfig(hosts, "my-topic", "", "mygroup");
+        KafkaSpout kafkaSpout = new KafkaSpout(spoutConfig);
+
+
+    }
     public static void main(String[] args) throws Exception {
         //配置zookeeper 主机:端口号
         BrokerHosts brokerHosts =new ZkHosts("localhost:2181");
