@@ -1,4 +1,4 @@
-package com.mark.storm.kafka.demo;
+package com.mark.storm.kafka.apidemo;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
@@ -10,8 +10,6 @@ import org.apache.storm.trident.Stream;
 import org.apache.storm.trident.TridentTopology;
 import org.apache.storm.trident.operation.Consumer;
 import org.apache.storm.trident.tuple.TridentTuple;
-
-import java.util.regex.Pattern;
 
 /**
  * Created by lulei on 2018/3/2.

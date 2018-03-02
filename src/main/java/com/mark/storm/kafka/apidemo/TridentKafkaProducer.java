@@ -1,4 +1,4 @@
-package com.mark.storm.kafka.demo;
+package com.mark.storm.kafka.apidemo;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;

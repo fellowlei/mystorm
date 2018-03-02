@@ -1,4 +1,4 @@
-package com.mark.storm.kafka.demo;
+package com.mark.storm.kafka.apidemo;
 
 import com.mark.storm.bolt.PrinterBolt;
 import org.apache.storm.Config;
