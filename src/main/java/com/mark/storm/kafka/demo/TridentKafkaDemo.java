@@ -1,7 +1,7 @@
 package com.mark.storm.kafka.demo;
 
 import org.apache.storm.Config;
-import org.apache.storm.StormSubmitter;
+import org.apache.storm.LocalCluster;
 import org.apache.storm.generated.AlreadyAliveException;
 import org.apache.storm.generated.AuthorizationException;
 import org.apache.storm.generated.InvalidTopologyException;
@@ -44,11 +44,17 @@ public class TridentKafkaDemo {
 
         TridentKafkaStateFactory stateFactory = new TridentKafkaStateFactory()
                 .withProducerProperties(props)
-                .withKafkaTopicSelector(new DefaultTopicSelector("test"))
+                .withKafkaTopicSelector(new DefaultTopicSelector("my-topic"))
                 .withTridentTupleToKafkaMapper(new FieldNameBasedTupleToKafkaMapper("word", "count"));
         stream.partitionPersist(stateFactory, fields, new TridentKafkaUpdater(), new Fields());
 
+//        Config conf = new Config();
+//        StormSubmitter.submitTopology("kafkaTridentTest", conf, topology.build());
+
         Config conf = new Config();
-        StormSubmitter.submitTopology("kafkaTridentTest", conf, topology.build());
+        conf.setDebug(true);
+        conf.setNumWorkers(1);
+        LocalCluster cluster = new LocalCluster();
+        cluster.submitTopology("kafkaTridentTest",conf,topology.build());
     }
 }

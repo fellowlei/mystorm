@@ -1,6 +1,7 @@
 package com.mark.storm.kafka.demo;
 
 import org.apache.storm.Config;
+import org.apache.storm.LocalCluster;
 import org.apache.storm.StormSubmitter;
 import org.apache.storm.generated.AlreadyAliveException;
 import org.apache.storm.generated.AuthorizationException;
@@ -47,13 +48,15 @@ public class BoltKafkaDemo {
 
         KafkaBolt bolt = new KafkaBolt()
                 .withProducerProperties(props)
-                .withTopicSelector(new DefaultTopicSelector("test"))
-                .withTupleToKafkaMapper(new FieldNameBasedTupleToKafkaMapper());
+                .withTopicSelector(new DefaultTopicSelector("my-topic"))
+                .withTupleToKafkaMapper(new FieldNameBasedTupleToKafkaMapper("key","message"));
         builder.setBolt("forwardToKafka", bolt, 8).shuffleGrouping("spout");
 
         Config conf = new Config();
-
-        StormSubmitter.submitTopology("kafkaboltTest", conf, builder.createTopology());
+        conf.setDebug(true);
+        conf.setNumWorkers(1);
+        LocalCluster cluster = new LocalCluster();
+        cluster.submitTopology("kafkaboltTest",conf,builder.createTopology());
     }
 
 
@@ -67,12 +70,13 @@ public class BoltKafkaDemo {
         @Override
         public void nextTuple() {
             Utils.sleep(1000);
-            spoutOutputCollector.emit(new Values(UUID.randomUUID().toString()));
+            String value = UUID.randomUUID().toString();
+            spoutOutputCollector.emit(new Values(value,value));
         }
 
         @Override
         public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-            outputFieldsDeclarer.declare(new Fields("value"));
+            outputFieldsDeclarer.declare(new Fields("key","message"));
         }
     }
 
