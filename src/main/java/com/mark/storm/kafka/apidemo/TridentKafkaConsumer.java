@@ -21,7 +21,7 @@ public class TridentKafkaConsumer {
         TridentTopology topology = new TridentTopology();
         //配置zookeeper 主机:端口号
         BrokerHosts brokerHosts =new ZkHosts("localhost:2181");
-        SpoutConfig spoutConfig = new SpoutConfig(brokerHosts, "my-topic", "", "mydemo2");
+//        SpoutConfig spoutConfig = new SpoutConfig(brokerHosts, "my-topic", "", "mydemo2");
         TridentKafkaConfig tridentKafkaConfig = new TridentKafkaConfig(brokerHosts, "my-topic", "spout");
 //        tridentKafkaConfig.scheme = new SchemeAsMultiScheme(new ConvertStringScheme());
         /**
