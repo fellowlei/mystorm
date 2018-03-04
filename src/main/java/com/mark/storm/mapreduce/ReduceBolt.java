@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class ReduceBolt extends BaseRichBolt {
     OutputCollector outputCollector;
-    Map<String,Integer> map = new HashMap<>();
+    static Map<String,Integer> map = new HashMap<>();
     @Override
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         this.outputCollector = outputCollector;
