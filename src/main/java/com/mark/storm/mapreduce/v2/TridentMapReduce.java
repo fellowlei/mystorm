@@ -13,7 +13,9 @@ import org.apache.storm.trident.testing.MemoryMapState;
 import org.apache.storm.trident.tuple.TridentTuple;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
-
+/**
+ * Created by fellowlei on 2018/3/4
+ */
 public class TridentMapReduce {
     public static void main(String[] args) {
         FixedBatchSpout spout = new FixedBatchSpout(new Fields("sentence"), 1, new Values("spark hadoop"), new Values("hadoop hive"));

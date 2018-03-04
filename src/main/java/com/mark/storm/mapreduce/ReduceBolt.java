@@ -11,6 +11,9 @@ import org.apache.storm.tuple.Values;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Created by fellowlei on 2018/3/4
+ */
 public class ReduceBolt extends BaseRichBolt {
     OutputCollector outputCollector;
     static Map<String,Integer> map = new HashMap<>();

@@ -10,6 +10,9 @@ import org.apache.storm.tuple.Values;
 
 import java.util.Map;
 
+/**
+ * Created by fellowlei on 2018/3/4
+ */
 public class MapBolt extends BaseRichBolt {
 
     OutputCollector outputCollector;

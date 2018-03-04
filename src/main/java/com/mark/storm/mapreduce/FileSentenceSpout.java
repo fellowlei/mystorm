@@ -1,13 +1,9 @@
 package com.mark.storm.mapreduce;
 
-import com.mark.storm.bolt.PrinterBolt;
 import com.mark.storm.mapreduce.service.IOService;
-import org.apache.storm.Config;
-import org.apache.storm.LocalCluster;
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
-import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.topology.base.BaseRichSpout;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
@@ -16,6 +12,9 @@ import org.apache.storm.utils.Utils;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by fellowlei on 2018/3/4
+ */
 public class FileSentenceSpout extends BaseRichSpout{
     SpoutOutputCollector spoutOutputCollector;
     List<String> lines = null;
@@ -38,20 +37,5 @@ public class FileSentenceSpout extends BaseRichSpout{
         outputFieldsDeclarer.declare(new Fields("sentence"));
     }
 
-    public static void main(String[] args) {
-        TopologyBuilder topologyBuilder = new TopologyBuilder();
-        topologyBuilder.setSpout("spout",new FileSentenceSpout(),1);
-        topologyBuilder.setBolt("map",new MapBolt(),1).shuffleGrouping("spout");
-        topologyBuilder.setBolt("reduce",new ReduceBolt(),1).shuffleGrouping("map");
-        topologyBuilder.setBolt("print",new PrinterBolt(),1).shuffleGrouping("reduce");
 
-
-        Config config = new Config();
-        config.setDebug(false);
-        config.setNumWorkers(1);
-
-        LocalCluster localCluster = new LocalCluster();
-        localCluster.submitTopology("mydemo",config,topologyBuilder.createTopology());
-
-    }
 }
